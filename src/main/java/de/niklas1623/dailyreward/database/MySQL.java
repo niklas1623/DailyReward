@@ -50,7 +50,7 @@ public class MySQL {
         if (isConnected()) {
             try {
                 con.createStatement().executeUpdate(
-                        "CREATE TABLE IF NOT EXISTS player (uuid VARCHAR(100) NOT NULL , onlinedays INT NOT NULL , lastjoin DATE NOT NULL DEFAULT CURRENT_DATE , PRIMARY KEY (uuid))");
+                        "CREATE TABLE IF NOT EXISTS player (uuid VARCHAR(100) NOT NULL , onlinedays INT NOT NULL , lastjoin DATE NOT NULL , PRIMARY KEY (uuid))");
 
             } catch (SQLException e) {
                 e.printStackTrace();
