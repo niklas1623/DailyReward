@@ -1,0 +1,10 @@
+name: DailyReward
+version: ${project.version}
+main: de.niklas1623.dailyreward.DailyReward
+api-version: 1.18
+authors: [ niklas1623 ]
+description: DailyReward by niklas1623
+website: https://www.cultcraft.de
+
+commands:
+  dailyreload:

@@ -1,0 +1,27 @@
+#   ---Plugin by niklas1623---
+#
+#   Copyright © 2020 niklas1623. Alle Rechte vorbehalten.
+#
+#   Nutze %player% für den Spielernamen
+#
+
+Settings:
+  Prefix: '&8&l[&e&lDaily&b&lReward&8&l]'
+  RewardCommand: 'minecraft:give %player% stone 1'
+
+#Die Zahlen sind die Tage ín folge!
+Rewards:
+  1: 'minecraft:give %player% stone 1'
+  7: 'minecraft:give %player% stone 10'
+  14: 'say %player% ist 14 Tage in folge gejoint!'
+
+#Wenn du eine Datenbank benutzten möchtest und du MySQL hast dann kannst du dies hier einstellen.
+
+Database:
+  username: username
+  password: passwort
+  database: DailyReward
+  host: localhost
+  port: '3306'
+
+
