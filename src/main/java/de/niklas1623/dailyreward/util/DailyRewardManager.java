@@ -58,7 +58,7 @@ public class DailyRewardManager {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return false;
+        return true;
     }
 
     public static Date getDate(String uuid) {

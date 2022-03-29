@@ -2,6 +2,7 @@ package de.niklas1623.dailyreward.listeners;
 
 import java.sql.Date;
 import java.text.SimpleDateFormat;
+import java.util.Objects;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -33,35 +34,33 @@ public class JoinListener implements Listener {
     }
 
     public void giveDailyReward(String uuid, String playername) {
-        java.sql.Date today = new java.sql.Date(System.currentTimeMillis());
-        java.sql.Date letzterJoin = DailyRewardManager.getDate(uuid);
-        if (letzterJoin.equals(today)) {
-        } else {
+        if (sdf.format(DailyRewardManager.getDate(uuid)).equalsIgnoreCase(sdf.format(yesterday()))) {
             DailyRewardManager.Join(uuid);
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(),
                     DailyReward.getInstace().RewardCommand.replaceAll("%player%", playername));
+
+        } else {
+            DailyRewardManager.Join(uuid);
         }
     }
 
     public void countDays(String uuid, String playername) {
-        java.sql.Date lastjoin = DailyRewardManager.getDate(uuid);
-        Bukkit.broadcastMessage(sdf.format(yesterday()));
-        assert lastjoin != null;
-        if (lastjoin.equals(yesterday())) {
-            Bukkit.broadcastMessage("It worked!");
-            int onlinedays = DailyRewardManager.getDays(uuid);
-            onlinedays = onlinedays + 1;
-            DailyRewardManager.setDays(uuid, onlinedays);
-            if (Filemanager.getConfigFileConfiguration().getString("Rewards." + onlinedays) == null) {
 
+            if (sdf.format(DailyRewardManager.getDate(uuid)).equalsIgnoreCase(sdf.format(yesterday()))) {
+                int onlinedays = DailyRewardManager.getDays(uuid);
+                onlinedays = onlinedays + 1;
+                DailyRewardManager.setDays(uuid, onlinedays);
+                if (Filemanager.getConfigFileConfiguration().getString("Rewards." + onlinedays) == null) {
+
+                } else {
+                    Filemanager.getDayReward(onlinedays);
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(),
+                            DailyReward.getInstace().Reward.replaceAll("%player%", playername));
+                }
             } else {
-                Filemanager.getDayReward(onlinedays);
-                Bukkit.dispatchCommand(Bukkit.getConsoleSender(),
-                        DailyReward.getInstace().Reward.replaceAll("%player%", playername));
+                DailyRewardManager.setDays(uuid, 1);
             }
-        } else {
-            DailyRewardManager.setDays(uuid, 1);
-        }
+
 
     }
 
@@ -69,6 +68,11 @@ public class JoinListener implements Listener {
         Date today = new Date(System.currentTimeMillis());
         Date yesterday = new Date(today.getTime() - (1000*60*60*24));
         return yesterday;
+    }
+
+    private static Date today() {
+        Date today = new Date(System.currentTimeMillis());
+        return today;
     }
 
 }
