@@ -2,6 +2,7 @@ package de.niklas1623.dailyreward;
 
 import de.niklas1623.dailyreward.util.Filemanager;
 import org.bukkit.Bukkit;
+import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import de.niklas1623.dailyreward.listeners.JoinListener;
@@ -12,13 +13,14 @@ public class DailyReward extends JavaPlugin{
 
     public void onEnable() {
         instance = this;
+        PluginDescriptionFile pdf = this.getDescription();
         registerEvents();
         registerCommand();
         saveDefaultConfig();
         Filemanager.readConfig();
         MySQL.connect();
         MySQL.createTable();
-        Bukkit.getConsoleSender().sendMessage(prefix + " Plugin wurde §ageladen§r!");
+        Bukkit.getConsoleSender().sendMessage(prefix + " Plugin wurde §ageladen§r! §eVersion: §c"+ pdf.getVersion());
 
     }
 
@@ -44,6 +46,8 @@ public class DailyReward extends JavaPlugin{
     public String prefix;
     public String RewardCommand;
     public String Reward;
+    public String RewardMSG;
+    public boolean MSG_Setting;
 
 
 

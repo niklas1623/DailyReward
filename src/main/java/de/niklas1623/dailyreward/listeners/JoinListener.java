@@ -2,7 +2,6 @@ package de.niklas1623.dailyreward.listeners;
 
 import java.sql.Date;
 import java.text.SimpleDateFormat;
-import java.util.Objects;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -25,28 +24,31 @@ public class JoinListener implements Listener {
         String uuid = p.getUniqueId().toString();
 
         if (DailyRewardManager.isJoined(uuid)) {
+            //Bukkit.broadcastMessage("§e"+playername + " joined the game.");
             countDays(uuid, playername);
-            giveDailyReward(uuid, playername);
+            giveDailyReward(uuid, playername, p);
         } else {
             DailyRewardManager.FirstJoin(uuid);
             DailyRewardManager.setDays(uuid, 1);
         }
     }
 
-    public void giveDailyReward(String uuid, String playername) {
-        if (sdf.format(DailyRewardManager.getDate(uuid)).equalsIgnoreCase(sdf.format(yesterday()))) {
+    public void giveDailyReward(String uuid, String playername, Player p) {
+        String DBDate = sdf.format(DailyRewardManager.getDate(uuid));
+        if (!DBDate.equalsIgnoreCase(sdf.format(today()))) {
             DailyRewardManager.Join(uuid);
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(),
                     DailyReward.getInstace().RewardCommand.replaceAll("%player%", playername));
-
+                    p.sendMessage(DailyReward.getInstace().RewardMSG.replaceAll("%player%", playername));
         } else {
             DailyRewardManager.Join(uuid);
         }
     }
 
     public void countDays(String uuid, String playername) {
-
-            if (sdf.format(DailyRewardManager.getDate(uuid)).equalsIgnoreCase(sdf.format(yesterday()))) {
+        String DBDate = sdf.format(DailyRewardManager.getDate(uuid));
+        if (!DBDate.equalsIgnoreCase(sdf.format(today()))) {
+            if (DBDate.equalsIgnoreCase(sdf.format(yesterday()))) {
                 int onlinedays = DailyRewardManager.getDays(uuid);
                 onlinedays = onlinedays + 1;
                 DailyRewardManager.setDays(uuid, onlinedays);
@@ -60,6 +62,7 @@ public class JoinListener implements Listener {
             } else {
                 DailyRewardManager.setDays(uuid, 1);
             }
+        }
 
 
     }
