@@ -42,6 +42,7 @@ public class Filemanager {
         pl.NoPerm = getMSG("Messages.NoPerm");
         pl.HowToPInfo = getMSG("Messages.HowToPInfo");
         pl.UUIDofPlayer = getMSG("Messages.UUIDofPlayer");
+        pl.ResetSetting = cfg.getBoolean("Settings.Reset");
 
         MySQL.username = cfg.getString("Database.username");
         MySQL.password = cfg.getString("Database.password");

@@ -8,6 +8,8 @@
 Settings:
   Prefix: '&8&l[&e&lDaily&b&lReward&8&l]'
   RewardCommand: 'procosmetics give coins %player% 100'
+#Soll die Datenbank am letzten Tag jeden Monats restet werden, Standard true
+  Reset: true
 
 Messages:
   DailyReward:
@@ -23,7 +25,14 @@ Rewards:
     Cmd: "procosmetics give treasure %player% normal 1"
     Msg: "%prefix% &7Du hat eine &eNormale &7Treasure Chest erhalten!"
   14:
-    Cmd: "say %player% ist 14 Tage in folge gejoint!"
+    Cmd: "procosmetics give treasure %player% mythical 1"
+    Msg: "%prefix% &7Du hat eine &5Mythical &7Treasure Chest erhalten!"
+  21:
+    Cmd: "procosmetics give treasure %player% legendary 1"
+    Msg: "%prefix% &7Du hat eine &5Mythical &&Legendary Chest erhalten!"
+  28:
+    Cmd: "procosmetics give treasure %player% legendary 1"
+    Msg: "%prefix% &7Du hat eine &5Mythical &&Legendary Chest erhalten!"
 
 #Bitte stelle hier deine Datenbank  ein!
 Database:

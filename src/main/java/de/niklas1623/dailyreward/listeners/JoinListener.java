@@ -51,7 +51,6 @@ public class JoinListener implements Listener {
                     }
                 }
             }, 40);
-
         } else {
             DailyRewardManager.onJoin(pID);
         }

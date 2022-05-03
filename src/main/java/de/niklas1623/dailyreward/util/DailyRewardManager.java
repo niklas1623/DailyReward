@@ -11,9 +11,9 @@ public class DailyRewardManager {
 
     /**
      * private static java.sql.Date getCurrentDate() {
-        java.util.Date today = new java.util.Date();
-        return new java.sql.Date(today.getTime());
-    }
+     * java.util.Date today = new java.util.Date();
+     * return new java.sql.Date(today.getTime());
+     * }
      **/
 
     private static Date getCurrentDate() {
@@ -79,6 +79,19 @@ public class DailyRewardManager {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public static void resetDBStats() {
+        String cmd = "UPDATE player_stats SET onlinedays = 1 WHERE 1";
+        PreparedStatement ps = null;
+        try {
+            ps = MySQL.con.prepareStatement(cmd);
+            ps.executeUpdate();
+            ps.close();
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+
     }
 
     public static void onJoin(int pID) {
