@@ -25,7 +25,7 @@ Rewards:
   14:
     Cmd: "say %player% ist 14 Tage in folge gejoint!"
 
-#Bitte stelle hier deine Datenbank ein!
+#Bitte stelle hier deine Datenbank  ein!
 Database:
   username: username
   password: passwort
