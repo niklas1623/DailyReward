@@ -2,7 +2,6 @@ package de.niklas1623.dailyreward.database;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import de.niklas1623.dailyreward.DailyReward;
@@ -51,32 +50,13 @@ public class MySQL {
         if (isConnected()) {
             try {
                 con.createStatement().executeUpdate(
-                        "CREATE TABLE IF NOT EXISTS player (uuid VARCHAR(100) NOT NULL , onlinedays INT NOT NULL , lastjoin DATE NOT NULL , PRIMARY KEY (uuid))");
+                        "CREATE TABLE IF NOT EXISTS player_stats (pid INT NOT NULL , onlinedays INT NOT NULL , lastjoin DATE NOT NULL , PRIMARY KEY (pid))");
+                con.createStatement().executeUpdate(
+                        "CREATE TABLE IF NOT EXISTS player_data (pid INT NOT NULL AUTO_INCREMENT , playername VARCHAR(100) NOT NULL , uuid VARCHAR(100) NOT NULL , PRIMARY KEY (pid))");
 
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
-    }
-
-    public static void update(String qry) {
-        if (isConnected()) {
-            try {
-                con.createStatement().executeUpdate(qry);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    public static ResultSet getResult(String qry) {
-        if (isConnected()) {
-            try {
-                return con.createStatement().executeQuery(qry);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-        return null;
     }
 }

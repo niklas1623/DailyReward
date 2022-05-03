@@ -8,3 +8,6 @@ website: https://www.cultcraft.de
 
 commands:
   dailyreload:
+  playerinfo:
+    aliases:
+      - pinfo

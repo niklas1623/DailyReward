@@ -21,11 +21,56 @@ public class DailyRewardManager {
         return date;
     }
 
-    public static void FirstJoin(String uuid) {
-        String firstjoin = "INSERT INTO player (uuid, lastjoin, onlinedays) values (?, ?, ?);";
+
+    public static void insertPlayerIntoDB(String playername, String uuid) {
+        String insertIntoDB = "INSERT INTO player_data (playername, uuid) VALUES (?, ?)";
+        try {
+            PreparedStatement ps = MySQL.con.prepareStatement(insertIntoDB);
+            ps.setString(1, playername);
+            ps.setString(2, uuid);
+
+            ps.executeUpdate();
+            ps.close();
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    public static void updatePlayerData(int pID, String playername) {
+        String updatePlayerData = "UPDATE player_data SET playername = ? WHERE pid = ?";
+        try {
+            PreparedStatement ps = MySQL.con.prepareStatement(updatePlayerData);
+            ps.setString(1, playername);
+            ps.setInt(2, pID);
+            ps.executeUpdate();
+            ps.close();
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    public static int getPID(String uuid) {
+        String getPID = "SELECT pid FROM player_data WHERE uuid = ?";
+        try {
+            PreparedStatement ps = MySQL.con.prepareStatement(getPID);
+            ps.setString(1, uuid);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                return rs.getInt("pid");
+            }
+            ps.close();
+            rs.close();
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+        return 0;
+    }
+
+    public static void FirstJoin(int pid) {
+        String firstjoin = "INSERT INTO player_stats (pid, lastjoin, onlinedays) values (?, ?, ?);";
         try {
             PreparedStatement ps_firstjoin = MySQL.con.prepareStatement(firstjoin);
-            ps_firstjoin.setString(1, uuid);
+            ps_firstjoin.setInt(1, pid);
             ps_firstjoin.setDate(2, getCurrentDate());
             ps_firstjoin.setInt(3, 1);
 
@@ -36,12 +81,12 @@ public class DailyRewardManager {
         }
     }
 
-    public static void Join(String uuid) {
-        String join = "UPDATE player SET lastjoin = ? WHERE uuid = ?";
+    public static void Join(int pID) {
+        String join = "UPDATE player_stats SET lastjoin = ? WHERE pid = ?";
         try {
             PreparedStatement ps_join = MySQL.con.prepareStatement(join);
             ps_join.setDate(1, getCurrentDate());
-            ps_join.setString(2, uuid);
+            ps_join.setInt(2, pID);
 
             ps_join.executeUpdate();
             ps_join.close();
@@ -50,28 +95,11 @@ public class DailyRewardManager {
         }
     }
 
-    public static boolean isJoined(String uuid) {
-        String isJoined = "SELECT uuid FROM player WHERE uuid = ?";
-        try {
-            PreparedStatement ps_isJoined = MySQL.con.prepareStatement(isJoined);
-            ps_isJoined.setString(1, uuid);
-            ResultSet rs = ps_isJoined.executeQuery();
-            while (rs.next()) {
-                return rs.getString("uuid") != null;
-            }
-            ps_isJoined.close();
-            rs.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
-    public static Date getDate(String uuid) {
-        String getDate = "SELECT lastjoin FROM player WHERE uuid = ?";
+    public static Date getDate(int pID) {
+        String getDate = "SELECT lastjoin FROM player_stats WHERE pid = ?";
         try {
             PreparedStatement ps_getDate = MySQL.con.prepareStatement(getDate);
-            ps_getDate.setString(1, uuid);
+            ps_getDate.setInt(1, pID);
             ResultSet rs = ps_getDate.executeQuery();
             while (rs.next()) {
 
@@ -86,12 +114,12 @@ public class DailyRewardManager {
 
     }
 
-    public static void setDays(String uuid, int onlinedays) {
-        String days = "UPDATE player SET onlinedays = ? WHERE uuid = ?";
+    public static void setDays(int pID, int onlinedays) {
+        String days = "UPDATE player_stats SET onlinedays = ? WHERE pid = ?";
         try {
             PreparedStatement ps_days = MySQL.con.prepareStatement(days);
             ps_days.setInt(1, onlinedays);
-            ps_days.setString(2, uuid);
+            ps_days.setInt(2, pID);
 
             ps_days.executeUpdate();
             ps_days.close();
@@ -101,14 +129,14 @@ public class DailyRewardManager {
     }
 
 
-    public static int getDays(String uuid) {
-        String getDays = "SELECT onlinedays FROM player WHERE uuid = ?";
+    public static int getDays(int pID) {
+        String getDays = "SELECT onlinedays FROM player_stats WHERE pid = ?";
         try {
             PreparedStatement ps_getDays = MySQL.con.prepareStatement(getDays);
-            ps_getDays.setString(1, uuid);
+            ps_getDays.setInt(1, pID);
             ResultSet rs = ps_getDays.executeQuery();
             while (rs.next()) {
-                return rs.getInt(1);
+                return rs.getInt("onlinedays");
             }
             ps_getDays.close();
             rs.close();

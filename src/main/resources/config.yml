@@ -13,12 +13,17 @@ Messages:
   DailyReward:
     Send: true
     Msg: "%prefix% &7Du hast deine tägliche Belohnung erhalten!"
+  NoPerm: "%prefix% &cDazu hast du keine Rechte!"
+  UUIDofPlayer: "%prefix% &7Der Spieler &e%player% &7hat folgende UUID: &e%uuid%"
+  HowToPInfo: "%prefix% &7Nutze /playerinfo <playername>"
 
 #Die Zahlen sind die Tage ín folge!
 Rewards:
-  1: 'minecraft:give %player% stone 1'
-  7: 'minecraft:give %player% stone 10'
-  14: 'say %player% ist 14 Tage in folge gejoint!'
+  7:
+    Cmd: 'procosmetics give treasure %player% normal 1'
+    Msg: "%prefix% &7Du hat eine &eNormale &7Treasure Chest erhalten!"
+  14:
+    Cmd: 'say %player% ist 14 Tage in folge gejoint!'
 
 #Bitte stelle hier deine Datenbank ein!
 Database:

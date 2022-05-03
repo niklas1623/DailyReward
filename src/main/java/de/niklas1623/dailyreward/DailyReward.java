@@ -1,5 +1,6 @@
 package de.niklas1623.dailyreward;
 
+import de.niklas1623.dailyreward.commands.PlayerInfoCommand;
 import de.niklas1623.dailyreward.util.Filemanager;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginDescriptionFile;
@@ -10,6 +11,8 @@ import de.niklas1623.dailyreward.commands.ReloadCommand;
 import de.niklas1623.dailyreward.database.MySQL;
 
 public class DailyReward extends JavaPlugin{
+
+
 
     public void onEnable() {
         instance = this;
@@ -33,7 +36,9 @@ public class DailyReward extends JavaPlugin{
 
     private void registerCommand() {
         ReloadCommand reloadCMD = new ReloadCommand(this);
+        PlayerInfoCommand playerInfoCommand = new PlayerInfoCommand(this);
         getCommand("dailyreload").setExecutor(reloadCMD);
+        getCommand("playerinfo").setExecutor(playerInfoCommand);
     }
 
     public void onDisable() {
@@ -45,8 +50,10 @@ public class DailyReward extends JavaPlugin{
 
     public String prefix;
     public String RewardCommand;
-    public String Reward;
     public String RewardMSG;
+    public String NoPerm;
+    public String HowToPInfo;
+    public String UUIDofPlayer;
     public boolean MSG_Setting;
 
 
