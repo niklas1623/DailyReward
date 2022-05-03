@@ -81,7 +81,7 @@ public class DailyRewardManager {
         }
     }
 
-    public static void Join(int pID) {
+    public static void onJoin(int pID) {
         String join = "UPDATE player_stats SET lastjoin = ? WHERE pid = ?";
         try {
             PreparedStatement ps_join = MySQL.con.prepareStatement(join);

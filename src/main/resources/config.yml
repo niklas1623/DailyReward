@@ -7,7 +7,7 @@
 
 Settings:
   Prefix: '&8&l[&e&lDaily&b&lReward&8&l]'
-  RewardCommand: 'minecraft:give %player% stone 1'
+  RewardCommand: 'procosmetics give coins %player% 100'
 
 Messages:
   DailyReward:
@@ -20,10 +20,10 @@ Messages:
 #Die Zahlen sind die Tage ín folge!
 Rewards:
   7:
-    Cmd: 'procosmetics give treasure %player% normal 1'
+    Cmd: "procosmetics give treasure %player% normal 1"
     Msg: "%prefix% &7Du hat eine &eNormale &7Treasure Chest erhalten!"
   14:
-    Cmd: 'say %player% ist 14 Tage in folge gejoint!'
+    Cmd: "say %player% ist 14 Tage in folge gejoint!"
 
 #Bitte stelle hier deine Datenbank ein!
 Database:

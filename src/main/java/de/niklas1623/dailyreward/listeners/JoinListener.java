@@ -29,7 +29,7 @@ public class JoinListener implements Listener {
             int pID = DailyRewardManager.getPID(uuid);
             countDays(uuid, playername, p);
             giveDailyReward(uuid, playername, p);
-            DailyRewardManager.updatePlayerData(pID,playername);
+            DailyRewardManager.updatePlayerData(pID, playername);
         } else {
             DailyRewardManager.insertPlayerIntoDB(playername, uuid);
             DailyRewardManager.FirstJoin(DailyRewardManager.getPID(uuid));
@@ -40,14 +40,20 @@ public class JoinListener implements Listener {
         int pID = DailyRewardManager.getPID(uuid);
         String DBDate = sdf.format(DailyRewardManager.getDate(pID));
         if (!DBDate.equalsIgnoreCase(sdf.format(today()))) {
-            DailyRewardManager.Join(pID);
-            Bukkit.dispatchCommand(Bukkit.getConsoleSender(),
-                    DailyReward.getInstace().RewardCommand.replaceAll("%player%", playername));
-            if (DailyReward.getInstace().MSG_Setting) {
-                p.sendMessage(DailyReward.getInstace().RewardMSG.replaceAll("%player%", playername));
-            }
+            DailyRewardManager.onJoin(pID);
+            Bukkit.getScheduler().runTaskLater(DailyReward.getInstace(), new Runnable() {
+                @Override
+                public void run() {
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(),
+                            DailyReward.getInstace().RewardCommand.replaceAll("%player%", playername));
+                    if (DailyReward.getInstace().MSG_Setting) {
+                        p.sendMessage(DailyReward.getInstace().RewardMSG.replaceAll("%player%", playername));
+                    }
+                }
+            }, 40);
+
         } else {
-            DailyRewardManager.Join(pID);
+            DailyRewardManager.onJoin(pID);
         }
     }
 
@@ -60,24 +66,23 @@ public class JoinListener implements Listener {
                 Bukkit.getLogger().log(Level.INFO, sdf.format(yesterday()));
                 int onlinedays = DailyRewardManager.getDays(pID);
                 int new_onlinedays = onlinedays + 1;
-                Bukkit.getLogger().log(Level.INFO, "onlinedays "+onlinedays);
-                Bukkit.getLogger().log(Level.INFO, "new_onlinedays "+new_onlinedays);
+                Bukkit.getLogger().log(Level.INFO, "onlinedays " + onlinedays);
+                Bukkit.getLogger().log(Level.INFO, "new_onlinedays " + new_onlinedays);
                 DailyRewardManager.setDays(pID, new_onlinedays);
-                if (Filemanager.cfg.getString("Rewards." + new_onlinedays+".Cmd") != null) {
+                if (Filemanager.cfg.getString("Rewards." + new_onlinedays + ".Cmd") != null) {
                     String CMD = Filemanager.getDayReward(new_onlinedays, playername);
                     Bukkit.getLogger().log(Level.INFO, CMD);
                     Bukkit.getScheduler().runTaskLater(DailyReward.getInstace(), new Runnable() {
                         @Override
                         public void run() {
                             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), CMD);
-                            Bukkit.broadcastMessage("200");
+                            if (Filemanager.cfg.getString("Rewards." + new_onlinedays + ".Msg") != null) {
+                                player.sendMessage(Filemanager.getDayRewardMSG(new_onlinedays));
+                            }
                         }
-                    }, 200);
-                    if (Filemanager.cfg.getString("Rewards." + new_onlinedays+".Msg") != null) {
-                        player.sendMessage(Filemanager.getDayRewardMSG(new_onlinedays));
-                    }
+                    }, 40);
                 }
-             } else {
+            } else {
                 DailyRewardManager.setDays(DailyRewardManager.getPID(uuid), 1);
             }
         }
@@ -87,7 +92,7 @@ public class JoinListener implements Listener {
 
     private static Date yesterday() {
         Date today = new Date(System.currentTimeMillis());
-        Date yesterday = new Date(today.getTime() - (1000*60*60*24));
+        Date yesterday = new Date(today.getTime() - (1000 * 60 * 60 * 24));
         return yesterday;
     }
 
